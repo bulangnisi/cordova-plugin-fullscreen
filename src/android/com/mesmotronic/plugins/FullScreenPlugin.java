@@ -30,6 +30,7 @@ public class FullScreenPlugin extends CordovaPlugin
 	public static final String ACTION_IMMERSIVE_MODE = "immersiveMode";
 	public static final String ACTION_HALF_IMMERSIVE_MODE = "halfImmersiveMode";
 	public static final String ACTION_SET_SYSTEM_UI_VISIBILITY = "setSystemUiVisibility";
+	public static final String ACTION_GET_NAVIGATION_HEIGHT = "getNavigationHeight";
 	
 	private CallbackContext context;
 	private Activity activity;
@@ -99,6 +100,8 @@ public class FullScreenPlugin extends CordovaPlugin
 			return halfImmersiveMode();
 		else if (ACTION_SET_SYSTEM_UI_VISIBILITY.equals(action))
 			return setSystemUiVisibility(args.getInt(0));
+		else if (ACTION_GET_NAVIGATION_HEIGHT.equals(action))
+			return getNavigationHeight();
 		
 		return false;
 	}
@@ -476,7 +479,6 @@ public class FullScreenPlugin extends CordovaPlugin
 				try
 				{
 					resetWindow();
-					
 					final int uiOptions = 
 						View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 						| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -546,6 +548,34 @@ public class FullScreenPlugin extends CordovaPlugin
 			}
 		});
 		
+		return true;
+	}
+
+	protected boolean getNavigationHeight()
+	{
+		activity.runOnUiThread(new Runnable()
+		{
+			@Override
+			public void run() 
+			{
+				try
+				{
+					Point outSize = new Point();
+					decorView.getDisplay().getRealSize(outSize);
+
+					Point inSize = new Point();
+					decorView.getDisplay().getSize(inSize);
+					
+			        PluginResult res = new PluginResult(PluginResult.Status.OK, outSize.y - inSize.y);
+			        context.sendPluginResult(res);
+				}
+				catch (Exception e)
+				{
+					context.error(e.getMessage());
+				}
+			}
+		});
+        
 		return true;
 	}
 	
