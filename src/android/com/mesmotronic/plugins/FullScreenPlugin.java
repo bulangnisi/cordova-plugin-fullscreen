@@ -28,6 +28,7 @@ public class FullScreenPlugin extends CordovaPlugin
 	public static final String ACTION_SHOW_UNDER_STATUS_BAR = "showUnderStatusBar";
 	public static final String ACTION_SHOW_UNDER_SYSTEM_UI = "showUnderSystemUI";
 	public static final String ACTION_IMMERSIVE_MODE = "immersiveMode";
+	public static final String ACTION_HALF_IMMERSIVE_MODE = "halfImmersiveMode";
 	public static final String ACTION_SET_SYSTEM_UI_VISIBILITY = "setSystemUiVisibility";
 	
 	private CallbackContext context;
@@ -94,7 +95,7 @@ public class FullScreenPlugin extends CordovaPlugin
 			return showUnderSystemUI();
 		else if (ACTION_IMMERSIVE_MODE.equals(action))
 			return immersiveMode();
-		else if (ACTION_IMMERSIVE_MODE.equal(action))
+		else if (ACTION_HALF_IMMERSIVE_MODE.equal(action))
 			return halfImmersiveMode();
 		else if (ACTION_SET_SYSTEM_UI_VISIBILITY.equals(action))
 			return setSystemUiVisibility(args.getInt(0));
