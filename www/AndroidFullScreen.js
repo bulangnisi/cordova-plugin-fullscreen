@@ -59,6 +59,11 @@
 		{
 			cordova.exec(successFunction, errorFunction, 'AndroidFullScreen', 'immersiveMode', []);
 		},
+
+		halfImmersiveMode: function(successFunction, errorFunction)
+		{
+			cordova.exec(successFunction, errorFunction, 'AndroidFullScreen', 'halfImmersiveMode', []);
+		},
 		
 		/**
 		 * @see	https://developer.android.com/reference/android/view/View.html#setSystemUiVisibility(int)

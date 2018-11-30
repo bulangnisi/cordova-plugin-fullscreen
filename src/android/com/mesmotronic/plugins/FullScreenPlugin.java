@@ -94,6 +94,8 @@ public class FullScreenPlugin extends CordovaPlugin
 			return showUnderSystemUI();
 		else if (ACTION_IMMERSIVE_MODE.equals(action))
 			return immersiveMode();
+		else if (ACTION_IMMERSIVE_MODE.equal(action))
+			return halfImmersiveMode();
 		else if (ACTION_SET_SYSTEM_UI_VISIBILITY.equals(action))
 			return setSystemUiVisibility(args.getInt(0));
 		
@@ -416,6 +418,69 @@ public class FullScreenPlugin extends CordovaPlugin
 						| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 						| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 						| View.SYSTEM_UI_FLAG_FULLSCREEN
+						| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+					
+					window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+					decorView.setSystemUiVisibility(uiOptions);
+					
+					decorView.setOnFocusChangeListener(new View.OnFocusChangeListener() 
+					{
+						@Override
+						public void onFocusChange(View v, boolean hasFocus) 
+						{
+							if (hasFocus)
+							{
+								decorView.setSystemUiVisibility(uiOptions);
+							}
+						}
+					});
+					
+					decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener()
+					{
+						@Override
+						public void onSystemUiVisibilityChange(int visibility) 
+						{
+							decorView.setSystemUiVisibility(uiOptions);
+						}
+					});
+					
+					context.success();
+				}
+				catch (Exception e)
+				{
+					context.error(e.getMessage());
+				}
+			}
+		});
+			
+		return true;
+	}
+
+	/**
+	 * Hide system UI and switch to immersive mode (Android 4.4+ only)
+	 */
+	protected boolean halfImmersiveMode()
+	{
+		if (!isImmersiveModeSupported())
+		{
+			context.error("Not supported");
+			return false;
+		}
+		
+		activity.runOnUiThread(new Runnable()
+		{
+			@Override
+			public void run() 
+			{
+				try
+				{
+					resetWindow();
+					
+					final int uiOptions = 
+						View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+						| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+						| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+						| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 						| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 					
 					window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
