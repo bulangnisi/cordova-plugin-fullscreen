@@ -95,7 +95,7 @@ public class FullScreenPlugin extends CordovaPlugin
 			return showUnderSystemUI();
 		else if (ACTION_IMMERSIVE_MODE.equals(action))
 			return immersiveMode();
-		else if (ACTION_HALF_IMMERSIVE_MODE.equal(action))
+		else if (ACTION_HALF_IMMERSIVE_MODE.equals(action))
 			return halfImmersiveMode();
 		else if (ACTION_SET_SYSTEM_UI_VISIBILITY.equals(action))
 			return setSystemUiVisibility(args.getInt(0));
